@@ -146,6 +146,10 @@ uses
 {$ifdef aix}
   ,i_aix
 {$endif aix}
+//{$ifdef toro}
+//  ,i_toro
+//{$endif toro}
+
   ,globtype;
 
 function Compile(const cmd:TCmdStr):longint;

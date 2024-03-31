@@ -1443,6 +1443,8 @@ interface
             FormatName:='obj';
           system_x86_64_linux:
             FormatName:='elf64';
+          system_x86_64_toro:
+            FormatName:='elf64';
         else
           FormatName:='elf64';
         end;

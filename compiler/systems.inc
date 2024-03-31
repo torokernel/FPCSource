@@ -187,7 +187,8 @@
              system_aarch64_android,    { 100 }
              system_x86_64_android,     { 101 }
              system_x86_64_haiku,       { 102 }
-             system_aarch64_darwin      { 111 (in trunk) }
+             system_aarch64_darwin,      { 111 (in trunk) }
+             system_x86_64_toro      { 112 (in trunk) }
        );
 
      type

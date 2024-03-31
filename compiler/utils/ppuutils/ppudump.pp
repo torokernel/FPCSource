@@ -215,7 +215,8 @@ const
   { 100 } 'Android-AArch64',
   { 101 } 'Android-x86-64',
   { 102 } 'Haiku-x86-64',
-  { 111 } 'Darwin-AArch64'
+  { 111 } 'Darwin-AArch64',
+  { 112 } 'Toro-x86-64'
   );
 
 const

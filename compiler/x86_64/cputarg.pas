@@ -63,6 +63,9 @@ implementation
     {$ifndef NOTARGETEMBEDDED}
       ,t_embed
     {$endif}
+    {$ifndef NOTARGETTORO}
+      ,t_toro
+    {$endif}
     {$ifndef NOTARGETANDROID}
       ,t_android
     {$endif}

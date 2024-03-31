@@ -282,7 +282,7 @@ interface
                            obsolete_system_mips_embedded,system_arm_embedded,
                            system_powerpc64_embedded,system_avr_embedded,
                            system_jvm_java32,system_mipseb_embedded,system_mipsel_embedded,
-                           system_i8086_embedded];
+                           system_i8086_embedded,system_x86_64_toro];
 
        { all systems that allow section directive }
        systems_allow_section = systems_embedded;
