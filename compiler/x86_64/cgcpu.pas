@@ -188,6 +188,28 @@ unit cgcpu;
           is expected to be one of those directives, and not generated here. }
         suppress_endprologue:=(pi_has_unwind_info in current_procinfo.flags);
 
+        { interrupt support for x86-64 }
+        if (po_interrupt in current_procinfo.procdef.procoptions) then
+          begin
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_RBP));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_RAX));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_RBX));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_RCX));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_RDX));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_RDI));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_RSI));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_R8));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_R9));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_R10));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_R11));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_R12));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_R13));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_R14));
+            list.concat(Taicpu.Op_reg(A_PUSH,S_Q,NR_R15));
+            { 15 regs * 8 bytes each }
+            inc(stackmisalignment, 15 * 8);
+          end;
+
         { save old framepointer }
         if not nostackframe then
           begin
@@ -390,7 +412,28 @@ unit cgcpu;
             list.concat(tai_regalloc.dealloc(current_procinfo.framepointer,nil));
           end;
 
-        list.concat(Taicpu.Op_none(A_RET,S_NO));
+        { return from interrupt handler }
+        if po_interrupt in current_procinfo.procdef.procoptions then
+          begin
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_R15));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_R14));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_R13));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_R12));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_R11));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_R10));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_R9));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_R8));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_RSI));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_RDI));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_RDX));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_RCX));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_RBX));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_RAX));
+            list.concat(Taicpu.Op_reg(A_POP,S_Q,NR_RBP));
+            list.concat(Taicpu.Op_none(A_IRETQ,S_NO));
+          end
+        else
+          list.concat(Taicpu.Op_none(A_RET,S_NO));
         if (pi_has_unwind_info in current_procinfo.flags) then
           begin
             tcpuprocinfo(current_procinfo).dump_scopes(list);
