@@ -148,12 +148,6 @@ implementation
           ppu file }
         if df_generic in current_procinfo.procdef.defoptions then
           exit;
-        if pi_has_assembler_block in current_procinfo.flags then
-          begin
-            Message1(parser_h_not_supported_for_inline,'assembler');
-            Message(parser_h_inlining_disabled);
-            exit;
-          end;
         if pi_has_global_goto in current_procinfo.flags then
           begin
             Message1(parser_h_not_supported_for_inline,'global goto');

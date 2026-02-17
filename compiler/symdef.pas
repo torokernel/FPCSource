@@ -5743,8 +5743,11 @@ implementation
             (tf_need_export in target_info.flags) and
             (po_exports in procoptions) then
            deffile.AddExport(mangledname);
-         { Disable po_has_inlining until the derefimpl is done }
-         has_inlininginfo:=false;
+         { Disable po_has_inlining until the derefimpl is done.
+           Assembler procedures don't need derefimpl since
+           their asm nodes have no Pascal symbol references }
+         if not(po_assembler in procoptions) then
+           has_inlininginfo:=false;
       end;
 
 
